@@ -34,8 +34,9 @@ public class ProductController {
     }
 
     @GetMapping("/match-all")
-    public SearchResponse<Map> matchAll() throws IOException {
+    public String matchAll() throws IOException {
         SearchResponse<Map> searchResponse = this.elasticSearchService.matchAllService();
-        return searchResponse;
+        System.out.println(searchResponse.hits().hits().toString());
+        return searchResponse.hits().hits().toString();
     }
 }
