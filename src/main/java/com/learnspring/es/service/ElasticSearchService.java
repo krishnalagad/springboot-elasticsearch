@@ -32,4 +32,12 @@ public class ElasticSearchService {
         System.out.println(searchResponse.hits().hits().toString());
         return searchResponse;
     }
+
+    public SearchResponse<Product> matchProductWithName(String name) throws Exception {
+        Supplier<Query> supplier = ElasticSearchUtil.supplierWithNameField(name);
+        SearchResponse<Product> searchResponse =
+                this.elasticsearchClient.search(s -> s.index("products").query(supplier.get()), Product.class);
+        System.out.println(searchResponse.hits().hits().toString());
+        return searchResponse;
+    }
 }

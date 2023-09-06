@@ -55,4 +55,16 @@ public class ProductController {
 
         return ResponseEntity.ok(listOfProducts);
     }
+
+    @GetMapping("/match-name/{name}")
+    public ResponseEntity<List<Product>> matchWithName(@PathVariable String name) throws Exception {
+        SearchResponse<Product> searchResponse = this.elasticSearchService.matchProductWithName(name);
+        List<Hit<Product>> listOfHits = searchResponse.hits().hits();
+        List<Product> listOfProducts = new ArrayList<>();
+
+        for (Hit<Product> hit : listOfHits) {
+            listOfProducts.add(hit.source());
+        }
+        return ResponseEntity.ok(listOfProducts);
+    }
 }
