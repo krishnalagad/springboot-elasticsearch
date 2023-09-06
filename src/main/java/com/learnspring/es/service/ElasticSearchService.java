@@ -40,4 +40,12 @@ public class ElasticSearchService {
         System.out.println(searchResponse.hits().hits().toString());
         return searchResponse;
     }
+
+    public SearchResponse<Product> matchProductWithFuzzyName(String approximateProductName) throws IOException {
+        Supplier<Query> supplier = ElasticSearchUtil.supplierWithFuzzyString(approximateProductName);
+        SearchResponse<Product> searchResponse =
+                this.elasticsearchClient.search(s -> s.index("products").query(supplier.get()), Product.class);
+        System.out.println(searchResponse.hits().hits().toString());
+        return searchResponse;
+    }
 }

@@ -67,4 +67,16 @@ public class ProductController {
         }
         return ResponseEntity.ok(listOfProducts);
     }
+
+    @GetMapping("/fuzzy-query/{name}")
+    public ResponseEntity<List<Product>> matchWithFuzzyQuery(@PathVariable String name) throws IOException {
+        SearchResponse<Product> searchResponse = this.elasticSearchService.matchProductWithFuzzyName(name);
+        List<Hit<Product>> listOfHits = searchResponse.hits().hits();
+        List<Product> listOfProducts = new ArrayList<>();
+
+        for (Hit<Product> hit : listOfHits) {
+            listOfProducts.add(hit.source());
+        }
+        return ResponseEntity.ok(listOfProducts);
+    }
 }
