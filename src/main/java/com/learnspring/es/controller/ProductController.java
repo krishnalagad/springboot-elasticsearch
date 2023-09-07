@@ -36,6 +36,13 @@ public class ProductController {
         return this.productService.getProducts();
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map<String, String>> deleteProduct(@PathVariable Integer id) {
+        this.productService.deleteProduct(id);
+        Map<String, String> response = Map.of("message", "Product deleted successfully");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+    }
+
     @GetMapping("/match-all")
     public String matchAll() throws IOException {
         SearchResponse<Map> searchResponse = this.elasticSearchService.matchAllService();
